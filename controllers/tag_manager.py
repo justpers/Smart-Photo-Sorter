@@ -6,7 +6,7 @@ class TagManager:
         # AI 태깅 서비스 호출 시뮬레이션
         sample_tags = [
             Tag("해변", "장소", 0.89),
-            Tag("여행", "행사", 0.82)
+            Tag("강아지", "동물", 0.82)
         ]
         for tag in sample_tags:
             photo.add_tag(tag)
