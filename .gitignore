@@ -17,3 +17,7 @@ __pycache__/
 *.tmp
 *.swp
 .DS_Store
+src/smart_photo_sorter.egg-info/dependency_links.txt
+src/smart_photo_sorter.egg-info/PKG-INFO
+src/smart_photo_sorter.egg-info/SOURCES.txt
+src/smart_photo_sorter.egg-info/top_level.txt

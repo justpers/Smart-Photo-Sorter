@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart-photo-sorter"
+version = "0.1.0"
+description = "Smart Photo Sorter"
+authors = [{name = "Your Name", email = "you@example.com"}]
+requires-python = ">=3.9"
+dependencies = []          # 필요 패키지 있으면 기입
+
+[tool.setuptools.packages.find]
+where = ["src"]
