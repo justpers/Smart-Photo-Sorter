@@ -13,6 +13,5 @@ class PhotoController:
     def upload(self, user: User, photo_bytes: bytes, meta: dict) -> str:
         photo = self.photo_manager.store(photo_bytes, meta)
         user.add_photo(photo)
-        # include UC: 자동 태깅
         self.tag_controller.auto_tag(photo)
         return photo.photo_id
