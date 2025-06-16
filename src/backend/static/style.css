@@ -44,6 +44,22 @@ body {
   font-size: 24px;
 }
 
+.nav ul li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin-left: 40px;
+}
+.nav ul li:first-child { margin-left: 0; }
+
+.nav ul li a,
+.nav ul li.user {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  font-size: 20px;
+}
+
 /* 본문 */
 .main-content {
   text-align: center;
