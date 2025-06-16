@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <title>Smart Sorter</title>
@@ -8,14 +8,17 @@
 <body>
   <!-- 헤더 -->
   <header class="header">
-    <div class="logo">
-      <a href="/">Smart Sorter</a>
-    </div>
+    <div class="logo"><a href="/">Smart Sorter</a></div>
     <nav class="nav">
       <ul>
         <li><a href="/album">My Album</a></li>
-        <li><a href="/login">Login</a></li>
-        <li><a href="/signup">Sign Up</a></li>
+        {% if user %}
+          <li style="margin-left:40px">Hi, {{ user.email }}</li>
+          <li style="margin-left:40px"><a href="/logout">Logout</a></li>
+        {% else %}
+          <li><a href="#" id="loginBtn">Login</a></li>
+          <li><a href="#" id="signupBtn">Sign Up</a></li>
+        {% endif %}
       </ul>
     </nav>
   </header>
@@ -26,16 +29,65 @@
     <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
       <label id="dropzone" for="file-input">
         <span>Drag &amp; drop photos here, or click to upload</span>
-        <input
-          type="file"
-          name="file"
-          id="file-input"
-          multiple
-          hidden
-          onchange="document.getElementById('upload-form').submit()"
-        />
+        <input type="file" name="file" id="file-input" hidden>
       </label>
     </form>
   </main>
+
+  <!-- Login Modal -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <span class="close" data-target="loginModal">&times;</span>
+      <h2>Login</h2>
+      <form action="/login" method="post">
+        {% if login_error %}
+          <p class="error">이메일 또는 비밀번호가 올바르지 않습니다.</p>
+        {% endif %}
+        <input type="email" name="email" placeholder="이메일" required /><br>
+        <input type="password" name="password" placeholder="비밀번호" required /><br>
+        <button type="submit">로그인</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal" id="signupModal">
+    <div class="modal-content">
+      <span class="close" data-target="signupModal">&times;</span>
+      <h2>Sign Up</h2>
+      <form action="/signup" method="post">
+        {% if signup_error %}
+          <p class="error">회원가입에 실패했습니다.</p>
+        {% endif %}
+        <input type="email" name="email" placeholder="이메일" required /><br>
+        <input type="password" name="password" placeholder="비밀번호" required /><br>
+        <button type="submit">가입하기</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 로그인 성공/가입 성공 알림 & login_success 플래그로 메뉴 갱신 -->
+  <script>
+    const params = new URLSearchParams(location.search);
+    if (params.get("signup_success")) {
+      alert("가입이 완료되었습니다! 로그인 해주세요.");
+      params.delete("signup_success");
+      history.replaceState(null, "", "/");
+    }
+    if (params.get("login_success")) {
+      alert("로그인에 성공했습니다!");
+      params.delete("login_success");
+      history.replaceState(null, "", "/");
+      // 메뉴도 바뀌도록 강제 리로드
+      window.location.reload();
+    }
+    // 템플릿에서 내려주는 user 유무로 JS 플래그 설정
+    const isLoggedIn = {{ 'true' if user else 'false' }};
+  </script>
+
+  <!-- 모달 토글 스크립트 -->
+  <script src="/static/modal.js"></script>
+  <!-- 업로드 전 로그인 체크 스크립트 -->
+  <script src="/static/upload.js"></script>
 </body>
 </html>

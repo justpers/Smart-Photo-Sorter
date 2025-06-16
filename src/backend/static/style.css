@@ -81,3 +81,114 @@ body {
   font-weight: 600;
   color: #333;
 }
+
+/* ===== 모달 배경 ===== */
+.modal {
+  display: none;           /* 기본은 숨김 */
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);    /* 약간 더 진한 오버레이 */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* fade-in 애니메이션 */
+@keyframes fadeIn {
+  from { opacity: 0; }  
+  to   { opacity: 1; }
+}
+
+/* ===== 모달 박스 ===== */
+.modal-content {
+  background: #fff;
+  padding: 40px;                    /* 패딩 30→40 */
+  border-radius: 12px;              /* 라운드 8→12 */
+  width: 640px;                     /* 가로 320→640 (2배) */
+  max-width: 90%;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);  /* 약간 더 진한 그림자 */
+  position: relative;
+  transform: scale(0.9);
+  animation: scaleIn 0.2s forwards;
+}
+
+/* scale-in 애니메이션 */
+@keyframes scaleIn {
+  to   { transform: scale(1); }
+  from { transform: scale(0.9); }
+}
+
+/* ===== 닫기 버튼 ===== */
+.modal-content .close {
+  position: absolute;
+  top: 16px; right: 16px;          /* 여백을 10→16으로 */
+  font-size: 28px;                 /* 크기 24→28 */
+  line-height: 1;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.modal-content .close:hover {
+  color: #444;
+}
+
+/* ===== 모달 헤딩 ===== */
+.modal-content h2 {
+  margin-bottom: 24px;              /* 여백  */ 
+  font-size: 28px;                  /* 크기  */ 
+  font-weight: 700;
+  color: #222;
+}
+
+/* ===== 입력 필드 ===== */
+.modal-content input[type="email"],
+.modal-content input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;               /* 충분한 패딩 */
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+.modal-content input:focus {
+  outline: none;
+  border-color: #007BFF;            /* 포커스 컬러 */
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+}
+
+/* ===== 버튼 ===== */
+.modal-content button {
+  display: block;
+  width: 100%;
+  padding: 14px 0;
+  background-color: #a1a6ac;        /* 파란색 버튼 */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.modal-content button:hover {
+  background-color: #0056b3;
+}
+.modal-content button:active {
+  transform: scale(0.98);
+}
+
+/* ===== 오류 메시지 ===== */
+.modal-content .error {
+  color: #c00;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* ===== 모달 내부 콘텐츠간 간격 ===== */
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
