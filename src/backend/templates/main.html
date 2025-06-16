@@ -26,17 +26,17 @@
   <!-- 본문 -->
   <main class="main-content">
     <h2>Photo Upload</h2>
-    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-        <label id="dropzone" for="file-input">
-            <span>Drag &amp; drop photos here, or click to upload</span>
-            <input type="file" name="file" id="file-input" />
-        </label>
+    <div id="upload-container">
+      <label id="dropzone" for="file-input">
+        <span>Drag &amp; drop photos here, or click to upload</span>
+        <input type="file" name="file" id="file-input" />
+      </label>
 
-        <!-- 진행률 바 -->
-        <div id="progress-wrapper" style="display:none; width:800px; margin:20px auto;">
-            <div id="progress-bar" style="height:8px; background:#007BFF; width:0%; border-radius:4px;"></div>
-        </div>
-    </form>
+      <!-- 진행률 바 -->
+      <div id="progress-wrapper" style="display:none; width:800px; margin:20px auto;">
+        <div id="progress-bar" style="height:8px; background:#007BFF; width:0%; border-radius:4px;"></div>
+      </div>
+    </div>
   </main>
 
   <!-- Login Modal -->
