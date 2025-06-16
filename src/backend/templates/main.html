@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html>
-<head><title>Smart Photo Sorter</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Sorter</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
 <body>
-    <h1>📷 Smart Photo Sorter</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <button type="submit">Upload</button>
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="logo">
+      <a href="/">Smart Sorter</a>
+    </div>
+    <nav class="nav">
+      <ul>
+        <li><a href="/album">My Album</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 본문 -->
+  <main class="main-content">
+    <h2>Photo Upload</h2>
+    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+      <label id="dropzone" for="file-input">
+        <span>Drag &amp; drop photos here, or click to upload</span>
+        <input
+          type="file"
+          name="file"
+          id="file-input"
+          multiple
+          hidden
+          onchange="document.getElementById('upload-form').submit()"
+        />
+      </label>
     </form>
+  </main>
 </body>
 </html>

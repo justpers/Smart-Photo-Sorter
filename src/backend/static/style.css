@@ -1,0 +1,83 @@
+/* reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* 기본 폰트 */
+body {
+  font-family: Pretendard, Noto Sans, sans-serif;
+  background: #fff;
+}
+
+/* 헤더 */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 120px;
+  border-bottom: 1px solid #e0e0e0;
+
+  height: 100px;
+  align-items: flex-end;
+}
+
+/* 로고 */
+.logo a {
+  text-decoration: none;
+  color: #000;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+/* 내비게이션 */
+.nav ul {
+  list-style: none;
+  display: flex;
+}
+
+.nav li + li {
+  margin-left: 40px;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+/* 본문 */
+.main-content {
+  text-align: center;
+  margin-top: 140px;
+}
+
+.main-content h2 {
+  margin-bottom: 40px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #222;
+}
+
+/* 드롭존 */
+#dropzone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 200px;
+  background-color: #f0f0f0;
+  border: 2px dashed #444;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 20px;
+}
+
+#dropzone:hover {
+  background-color: #e0e0e0;
+}
+
+#dropzone span {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
