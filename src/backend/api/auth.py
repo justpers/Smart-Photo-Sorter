@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Form
+from fastapi import APIRouter, Form, HTTPException, Request, Response
 from fastapi.responses import RedirectResponse
 from gotrue.errors import AuthApiError
 from backend.services.supabase_client import supabase
@@ -15,16 +15,22 @@ async def signup_get():
 
 @router.post("/login")
 async def login(email: str = Form(...), password: str = Form(...)):
-    try:
-        res = supabase.auth.sign_in_with_password({"email": email, "password": password})
-    except AuthApiError:
-        return RedirectResponse("/?login_error=1", 302)
-    if getattr(res, "session", None):
-        resp = RedirectResponse("/?login_success=1", 302)
-        resp.set_cookie("access_token", res.session.access_token, httponly=True, samesite="lax")
-        return resp
-    return RedirectResponse("/?login_error=1", 302)
-
+    res = supabase.auth.sign_in_with_password({
+        "email": email,
+        "password": password
+    })
+    # res.session 안에 토큰들이 들어있음
+    session = res.session
+    if session:
+        # access_token, refresh_token 꺼내기
+        access_token  = session.access_token
+        refresh_token = session.refresh_token
+        response = RedirectResponse("/", 302)
+        # 쿠키에 저장
+        response.set_cookie("access_token",  access_token,  httponly=True, samesite="lax")
+        response.set_cookie("refresh_token", refresh_token, httponly=True, samesite="lax")
+        return response
+    raise HTTPException(401, "로그인 실패")
 
 @router.post("/signup")
 async def signup(email: str = Form(...), password: str = Form(...)):
@@ -60,3 +66,13 @@ async def logout():
     resp = RedirectResponse("/", 302)
     resp.delete_cookie("access_token")
     return resp
+
+@router.post("/refresh")
+async def refresh_token(request: Request, response: Response):
+    refresh = request.cookies.get("refresh_token")
+    if not refresh:
+        raise HTTPException(401, "재로그인 필요")
+    new_sess = supabase.auth.refresh_session({"refresh_token": refresh})
+    response.set_cookie("access_token", new_sess.session.access_token, httponly=True)
+    response.set_cookie("refresh_token", new_sess.session.refresh_token, httponly=True)
+    return {"status": "refreshed"}
