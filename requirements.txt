@@ -6,3 +6,4 @@ imagehash
 python-multipart
 requests
 python-dotenv  
+jinja2

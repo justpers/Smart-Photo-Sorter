@@ -1,5 +1,5 @@
 from smart_photo_sorter.entity.photo import Photo
-from smart_photo_sorter.service.ai_service import AIService
+from backend.services.ai_service import AIService
 
 
 class TagController:
