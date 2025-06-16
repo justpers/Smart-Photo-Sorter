@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
 # 라우터들
-from src.backend.api import album, duplicates, auth  # upload.router 은 이제 /가 아님
+from src.backend.api import upload, album, duplicates, auth  # upload.router 은 이제 /가 아님
 from src.backend.core.security import get_optional_current_user
 
 app = FastAPI()
@@ -34,3 +34,4 @@ async def main_page(
 app.include_router(auth.router)            # /login, /signup, /logout
 app.include_router(album.router, prefix="") # /album
 app.include_router(duplicates.router, prefix="")  # /duplicates
+app.include_router(upload.router)
