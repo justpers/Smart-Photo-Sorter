@@ -1,2 +1,8 @@
-pytest
-request
+fastapi
+uvicorn[standard]
+supabase
+pillow
+imagehash
+python-multipart
+requests
+python-dotenv  
