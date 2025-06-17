@@ -22,7 +22,8 @@ if missing:
 supabase_anon = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 # 2) 쓰기·업로드 전용 (service-role 키)  ← RLS 우회
-supabase = create_client(
+supabase_admin = create_client(
     SUPABASE_URL,
     SUPABASE_SERVICE_ROLE_KEY
 )
+supabase = supabase_admin

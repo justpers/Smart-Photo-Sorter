@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Album</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- (메인 페이지와 같은 헤더가 필요하면 복사) -->
+  <header class="header">
+    <div class="logo"><a href="/">Smart Sorter</a></div>
+    <nav class="nav">
+      <ul>
+        <li><a href="/album">My Album</a></li>
+        <li><a href="/" id="homeBtn">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-content" style="display:flex;">
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar" style="width:250px; padding:20px; border-right:1px solid #ddd;">
+      <section class="search">
+        <h3>Search</h3>
+        <input id="tag-input" placeholder="태그를 입력하세요" style="width:100%; padding:8px"/>
+        <button id="searchBtn" style="margin-top:8px;">검색</button>
+      </section>
+      <section class="duplicates" style="margin-top:24px;">
+        <h3>Remove Duplicates</h3>
+        <button id="dupBtn">실행</button>
+      </section>
+      <footer id="totalCount" style="position:absolute; bottom:20px; left:20px;">
+        Total count: 0
+      </footer>
+    </aside>
+
+    <!-- 오른쪽 사진 컨테이너 -->
+    <main class="photo-container" style="flex:1; padding:20px;">
+      <!-- JS가 여기에 <h4>, <div class="grid">… 을 추가합니다 -->
+    </main>
+  </div>
+
+  <!-- 로그인 여부 플래그 (필요하다면) -->
+  <script>
+    const SUPABASE_URL = "{{ SUPABASE_URL }}";
+    const isLoggedIn = {{ 'true' if user else 'false' }};
+  </script>
+  <!-- 앨범용 JS -->
+  <script src="/static/album.js"></script>
+</body>
+</html>

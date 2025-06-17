@@ -217,3 +217,7 @@ body {
   opacity: 0;
   pointer-events: none;
 }
+
+/* album용 grid 스타일이 없다면 추가 */
+.grid img { border-radius: 6px; transition: transform .2s }
+.grid img:hover { transform: scale(1.03); }

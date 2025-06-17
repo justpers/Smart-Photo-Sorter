@@ -3,35 +3,37 @@ from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import os
 
-# 라우터들
-from src.backend.api import upload, album, duplicates, auth  # upload.router 은 이제 /가 아님
+# 페이지 핸들러
 from src.backend.core.security import get_optional_current_user
+# API 라우터
+from src.backend.api import auth, upload, album as album_api, duplicates
 
 app = FastAPI()
 
-# --- 템플릿 & Static 설정 ---
+# 템플릿 / static
 BASE_DIR = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_DIR / "templates")
+templates.env.globals['env'] = os.getenv
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
-# --- 메인 페이지 핸들러 (/ root) ---
+# 메인 페이지
 @app.get("/", response_class=HTMLResponse)
-async def main_page(
-    request: Request,
-    user = Depends(get_optional_current_user)
-):
-    # 쿼리스트링 플래그를 템플릿에 넘기기
-    params = dict(request.query_params)
-    return templates.TemplateResponse("main.html", {
+async def main_page(request: Request, user=Depends(get_optional_current_user)):
+    return templates.TemplateResponse("main.html", {"request": request, "user": user})
+
+# 앨범 페이지 (HTML)
+@app.get("/album", response_class=HTMLResponse)
+async def album_page(request: Request, user=Depends(get_optional_current_user)):
+    return templates.TemplateResponse("album.html", {
         "request": request,
         "user": user,
-        "login_error": params.get("login_error"),
-        "signup_error": params.get("signup_error"),
+        "SUPABASE_URL": os.getenv("SUPABASE_URL")
     })
 
-# --- 다른 라우터 등록 ---
-app.include_router(auth.router)            # /login, /signup, /logout
-app.include_router(album.router, prefix="") # /album
-app.include_router(duplicates.router, prefix="")  # /duplicates
-app.include_router(upload.router)
+# API 라우터 (prefix="/api")
+app.include_router(auth.router,       prefix="")       # /login, /signup, /logout
+app.include_router(upload.router,     prefix="/api")    # POST /api/upload
+app.include_router(album_api.router,  prefix="/api")    # GET  /api/photos
+app.include_router(duplicates.router, prefix="/api")    # e.g. GET /api/duplicates
