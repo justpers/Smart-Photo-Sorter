@@ -23,14 +23,20 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 async def main_page(request: Request, user=Depends(get_optional_current_user)):
     return templates.TemplateResponse("main.html", {"request": request, "user": user})
 
-# 앨범 페이지 (HTML)
+# 앨범 페이지
 @app.get("/album", response_class=HTMLResponse)
 async def album_page(request: Request, user=Depends(get_optional_current_user)):
-    return templates.TemplateResponse("album.html", {
-        "request": request,
-        "user": user,
-        "SUPABASE_URL": os.getenv("SUPABASE_URL")
-    })
+    # TODO: 실제 DB에서 top 6 태그를 뽑아주세요.
+    popular = ["apron", "food market", "dog", "travel", "flower", "sunset"]
+    return templates.TemplateResponse(
+        "album.html",
+        {
+            "request": request,
+            "user": user,
+            "popular_tags": popular,
+            "SUPABASE_URL": os.getenv("SUPABASE_URL")
+        }
+    )
 
 # API 라우터 (prefix="/api")
 app.include_router(auth.router,       prefix="")       # /login, /signup, /logout

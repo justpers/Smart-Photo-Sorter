@@ -238,7 +238,7 @@ body {
 
 /* (기존) section 간격을 재조정 */
 .sidebar .duplicates {
-  margin-top: 200px;      /* Search와 충분한 거리 */
+  margin-top: 100px;      /* Search와 충분한 거리 */
 }
 
 /* 섹션 제목(h3) 글자 크기 */

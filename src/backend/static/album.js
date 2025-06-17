@@ -1,13 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let offset = 0, limit = 20, currentTag = "", endOfList = false;
+  let offset = 0,
+      limit = 20,
+      currentTag = "",
+      endOfList = false;
+
   const container    = document.querySelector(".photo-container");
   const totalCountEl = document.getElementById("totalCount");
+  const searchInput  = document.getElementById("tag-input");
+  const searchBtn    = document.getElementById("searchBtn");
+  const dupBtn       = document.getElementById("dupBtn");
+  const exampleTags  = document.querySelectorAll(".example-tag");
 
+  // ───────────────────────── 데이터 로드
   async function loadMore() {
     if (endOfList) return;
     const url = `/api/photos?tag=${encodeURIComponent(currentTag)}&limit=${limit}&offset=${offset}`;
     const res = await fetch(url, { credentials: "include" });
-    if (!res.ok) return;
+    if (!res.ok) return alert("사진 목록을 불러오지 못했습니다.");
+
     const { photos, count } = await res.json();
     renderPhotos(photos);
     totalCountEl.textContent = `Total count: ${count}`;
@@ -20,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     list.forEach(p => {
       const date = p.inserted_at.split("T")[0];
 
-      /* 날짜 헤더 + 그리드 생성 */
+      // 날짜 헤더 + 그리드 생성
       let grid = document.querySelector(`#date-${date} + .grid`);
       if (!grid) {
         const h4 = document.createElement("h4");
@@ -38,41 +48,63 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(grid);
       }
 
-      /* 썸네일 이미지 */
+      // 썸네일 이미지
       const img = document.createElement("img");
-      img.src = `${SUPABASE_URL}/storage/v1/object/public/photos/${p.file_path}`;
-      img.alt = p.file_path.split("/").pop();
-      img.style.width = "100%";
-      img.style.height = "160px";
+      img.src    = `${SUPABASE_URL}/storage/v1/object/public/photos/${p.file_path}`;
+      img.alt    = p.file_path.split("/").pop();
+      img.style.width     = "100%";
+      img.style.height    = "160px";
       img.style.objectFit = "cover";
       img.loading = "lazy";
       grid.appendChild(img);
     });
   }
-  
-  // ───────────────────────── 초기 로드 및 무한 스크롤 세팅
+
+  // ───────────────────────── 검색 함수
+  function doSearch() {
+    currentTag    = searchInput.value.trim();
+    offset        = 0;
+    endOfList     = false;
+    container.innerHTML = "";
+    container.appendChild(sentinel);
+    loadMore().then(() => {
+      if (offset === 0) {
+        container.textContent = "아직 해당 태그는 존재하지 않습니다.";
+      }
+    });
+  }
+
+  // 검색 버튼 & Enter 키
+  searchBtn.addEventListener("click", doSearch);
+  searchInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      doSearch();
+    }
+  });
+
+  // 추천 태그 버튼 클릭
+  exampleTags.forEach(btn =>
+    btn.addEventListener("click", () => {
+      const tag = btn.textContent.replace(/^#/, "");
+      searchInput.value = tag;
+      doSearch();
+    })
+  );
+
+  // 중복 정리
+  dupBtn.addEventListener("click", () =>
+    alert("중복 사진 정리 기능은 아직 준비 중입니다.")
+  );
+
+  // ───────────────────────── 무한 스크롤 세팅
   const sentinel = document.createElement("div");
   const io = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) loadMore();
   }, { rootMargin: "300px" });
 
-  // **여기서만 한 번** loadMore() 호출 → 이후 스크롤 감지로 추가 로드
   loadMore().then(() => {
     container.appendChild(sentinel);
     io.observe(sentinel);
   });
-
-  // ───────────────────────── 검색 & 중복정리
-  document.getElementById("searchBtn").addEventListener("click", () => {
-    currentTag = document.getElementById("tag-input").value.trim();
-    offset = 0; endOfList = false;
-    container.innerHTML = "";
-    container.appendChild(sentinel);
-    loadMore().then(() => {
-      if (offset === 0) container.textContent = "아직 해당 태그는 존재하지 않습니다.";
-    });
-  });
-
-  document.getElementById("dupBtn").onclick = () =>
-    alert("중복 사진 정리 기능은 아직 준비 중입니다.");
 });
