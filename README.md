@@ -29,22 +29,7 @@ Supabase를 백엔드로 활용하며, FastAPI 기반 API와 프론트엔드 JS�
 ---
 
 ## 📁 프로젝트 구조
-Smart-Photo-Sorter/
-├── src/
-│   ├── backend/
-│   │   ├── api/               # API 라우터 (upload, album 등)
-│   │   ├── core/              # 보안, 해시 유틸 함수
-│   │   ├── services/          # Supabase 및 AI 서비스 클라이언트
-│   │   ├── static/            # JS, CSS 등 정적 리소스
-│   │   ├── templates/         # Jinja2 HTML 템플릿
-│   │   └── main.py            # FastAPI 앱 진입점
-│   ├── smart_photo_sorter/    # 패키지 메타 정보
-│   └── smart_photo_sorter.egg-info/
-├── .env                       # 환경 변수 파일 (API 키 등)
-├── requirements.txt           # 의존 패키지 목록
-└── README.md
-
----
+<pre> Smart-Photo-Sorter/ └── src/ └── backend/ ├── __pycache__/ # 파이썬 캐시 디렉토리 (자동 생성) ├── api/ # FastAPI 라우터 모음 (upload, album 등) ├── core/ # 보안, 해시 유틸리티 (예: get_current_user, hash 계산) ├── services/ # Supabase 연동, AI 태깅 모듈 등 서비스 클래스 ├── static/ # JS, CSS 등 정적 리소스 ├── templates/ # Jinja2 템플릿 (HTML 페이지들) └── main.py # FastAPI 앱 진입점 ├── smart_photo_sorter/ # 패키지 루트 (배포용 구성 시 사용) ├── smart_photo_sorter.egg-info/ # setuptools 빌드시 생성되는 메타 정보 폴더 </pre>
 
 ## ⚙️ 설치 및 실행
 
