@@ -23,7 +23,7 @@ Supabase를 백엔드로 활용하며, FastAPI 기반 API와 프론트엔드 JS�
 |------|------|
 | 백엔드 | FastAPI, Supabase (PostgREST + Storage) |
 | 프론트엔드 | HTML5, Vanilla JS |
-| AI 태깅 | Hugging Face 모델 API (예: `image-classification`) |
+| AI 태깅 | Hugging Face 모델 API |
 | 기타 | dotenv, uuid, hashing (SHA256 + pHash) |
 
 ---
