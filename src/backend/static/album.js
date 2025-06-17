@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (photos.length < limit) endOfList = true;
   }
 
-  // ───────────────────────── 렌더링
+  // ───────────────────────── 렌더링 (썸네일 = a + img)
   function renderPhotos(list) {
     list.forEach(p => {
       const date = p.inserted_at.split("T")[0];
@@ -48,19 +48,25 @@ document.addEventListener("DOMContentLoaded", () => {
         container.appendChild(grid);
       }
 
-      // 썸네일 이미지
-      const img = document.createElement("img");
+      // ── 썸네일 (a > img)
+      const link = document.createElement("a");
+      link.href  = `/photo/${p.id}`;
+      link.className = "thumb";           // (선택) :hover 스타일용
+
+      const img  = document.createElement("img");
       img.src    = `${SUPABASE_URL}/storage/v1/object/public/photos/${p.file_path}`;
       img.alt    = p.file_path.split("/").pop();
+      img.loading = "lazy";
       img.style.width     = "100%";
       img.style.height    = "160px";
       img.style.objectFit = "cover";
-      img.loading = "lazy";
-      grid.appendChild(img);
+
+      link.appendChild(img);
+      grid.appendChild(link);
     });
   }
 
-  // ───────────────────────── 검색 함수
+  // ───────────────────────── 검색
   function doSearch() {
     currentTag    = searchInput.value.trim();
     offset        = 0;
@@ -74,7 +80,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 검색 버튼 & Enter 키
   searchBtn.addEventListener("click", doSearch);
   searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
@@ -83,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 추천 태그 버튼 클릭
+  // 추천 태그
   exampleTags.forEach(btn =>
     btn.addEventListener("click", () => {
       const tag = btn.textContent.replace(/^#/, "");
@@ -97,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     alert("중복 사진 정리 기능은 아직 준비 중입니다.")
   );
 
-  // ───────────────────────── 무한 스크롤 세팅
+  // ───────────────────────── 무한 스크롤
   const sentinel = document.createElement("div");
   const io = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) loadMore();

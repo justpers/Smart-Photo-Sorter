@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Photo{% endblock %}
+
+{% block content %}
+<div class="viewer">
+  <!-- 뒤로가기 -->
+  <a href="/album" class="btn back">← 뒤로가기</a>
+
+  <!-- 좌/우 화살표 -->
+  {% if prev_id %}
+    <a class="nav-arrow left"  href="/photo/{{ prev_id }}">❮</a>
+  {% endif %}
+  {% if next_id %}
+    <a class="nav-arrow right" href="/photo/{{ next_id }}">❯</a>
+  {% endif %}
+
+  <!-- 큰 이미지 -->
+  <img id="main-photo"
+       class="main-photo"
+       src="{{ SUPABASE_URL }}/storage/v1/object/public/photos/{{ photo.file_path }}"
+       alt="photo">
+
+  <!-- 태그 패널 -->
+  <aside class="side">
+    <h3>Tags</h3>
+    <ul id="tag-list" class="tag-list">
+      {% for t in photo.tags %}
+        <li class="tag-chip">
+          {{ t }}
+          <button data-tag="{{ t }}" class="tag-del">×</button>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <!-- 수동 입력 -->
+    <div class="add-tag">
+      <input id="new-tag" placeholder="새 태그">
+      <button id="add-tag" class="btn">추가</button>
+    </div>
+
+    <!-- 사진 삭제 -->
+    <hr>
+    <button id="delete-photo" class="btn danger">사진 삭제</button>
+  </aside>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const photoId = "{{ photo.id }}";
+const API     = "/api/photos/" + photoId;
+
+// ─────────── 태그 삭제
+document.querySelectorAll(".tag-del").forEach(btn => {
+  btn.onclick = () => {
+    const tag = btn.dataset.tag;
+    updateTags(tags => tags.filter(t => t !== tag));
+  };
+});
+
+// ─────────── 태그 추가
+document.getElementById("add-tag").onclick = () => {
+  const v = document.getElementById("new-tag").value.trim();
+  if (v) updateTags(tags => {
+    if (!tags.includes(v)) tags.push(v);
+    return tags;
+  });
+};
+
+async function updateTags(mutator) {
+  const now  = [...document.querySelectorAll("#tag-list li")]
+               .map(li => li.firstChild.textContent.trim());
+  const next = mutator(now);
+
+  await fetch(API + "/tags", {
+    method : "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body   : JSON.stringify(next)
+  });
+  location.reload();   // 새로고침으로 반영
+}
+
+// ─────────── 사진 삭제
+document.getElementById("delete-photo").onclick = async () => {
+  if (!confirm("정말 삭제하시겠습니까?")) return;
+  await fetch(API, { method: "DELETE" });
+  location.href = "/album";
+};
+</script>
+{% endblock %}

@@ -309,3 +309,87 @@ body {
   flex: 1;
   padding: 40px 20px;
 }
+
+/* ─── 레이아웃 ─────────────────────────────── */
+.viewer{
+  max-width: 960px;
+  margin: 32px auto;
+  padding: 0 16px;
+  position: relative;
+}
+.main-photo{
+  width: 100%;
+  max-height: 70vh;          /* 화면 70% 를 넘지 않도록 */
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15);
+}
+.side{
+  margin-top: 24px;
+}
+
+/* ─── 화살표 네비 ─────────────────────────── */
+.nav-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: #fff;
+  text-decoration: none;
+  user-select: none;
+  padding: 4px 10px;
+  background: rgba(0,0,0,.35);
+  border-radius: 4px;
+}
+.nav-arrow.left  { left: 8px; }
+.nav-arrow.right { right: 8px; }
+.nav-arrow:hover { background: rgba(0,0,0,.55); }
+
+/* ─── 공통 버튼 ───────────────────────────── */
+.btn{
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: #4e7cff;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+.btn:hover{ background:#3c66e6; }
+.btn.back{
+  position: absolute; left:0; top:-36px;
+  background:#888;
+}
+.btn.danger{ background:#ff5252; }
+.btn.danger:hover{ background:#e64040; }
+
+/* ─── 태그 칩 ─────────────────────────────── */
+.tag-list{ list-style:none; padding:0; margin:8px 0 16px; display:flex; flex-wrap:wrap; gap:6px; }
+.tag-chip{
+  background:#f2f4f7;
+  border-radius:16px;
+  padding:4px 8px;
+  font-size:13px;
+  display:flex; align-items:center;
+}
+.tag-del{
+  margin-left:6px;
+  background:none;
+  border:none;
+  color:#777;
+  cursor:pointer;
+  font-size:14px; line-height:1;
+}
+.tag-del:hover{ color:#000; }
+
+/* ─── 추가 입력 ───────────────────────────── */
+.add-tag{ display:flex; gap:6px; }
+.add-tag input{
+  flex:1;
+  padding:4px 6px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  font-size:14px;
+}

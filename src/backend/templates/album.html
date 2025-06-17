@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
+  <!-- ───────────── 헤더 ───────────── -->
   <header class="header">
     <div class="logo"><a href="/">Smart Sorter</a></div>
     <nav class="nav">
@@ -16,8 +17,11 @@
     </nav>
   </header>
 
+  <!-- ───────────── 본문 ───────────── -->
   <div class="page-content">
+    <!-- ── 사이드바 ── -->
     <aside class="sidebar">
+      <!-- 검색 -->
       <section class="search">
         <h3>Search</h3>
         <input id="tag-input" placeholder="태그를 입력하세요" />
@@ -34,21 +38,41 @@
         </div>
       </section>
 
+      <!-- 중복 제거 -->
       <section class="duplicates">
         <h3>Remove Duplicates</h3>
         <button id="dupBtn">실행</button>
       </section>
 
+      <!-- 총 개수 -->
       <footer id="totalCount">
         Total count: 0
       </footer>
     </aside>
 
+    <!-- ── 썸네일 그리드 ── -->
     <main class="photo-container">
-      <!-- JS가 여기에 <h4> + <div.grid> + <img> 만 추가합니다 -->
+      <h4 class="grid-title">최근 업로드</h4>
+      <div class="grid" id="thumbGrid">
+        {% if photos %}
+          {% for p in photos %}
+            <a href="/photo/{{ p.id }}" class="thumb">
+              <img
+                src="{{ SUPABASE_URL }}/storage/v1/object/public/photos/{{ p.file_path }}"
+                alt=""
+                loading="lazy"
+              />
+            </a>
+          {% endfor %}
+        {% else %}
+          <p class="empty-msg">업로드된 사진이 없습니다.</p>
+        {% endif %}
+      </div>
+      <!-- JS 무한 스크롤 시 추가 썸네일을 여기에 append -->
     </main>
   </div>
 
+  <!-- ───────────── 전역 변수 & 스크립트 ───────────── -->
   <script>
     const SUPABASE_URL = "{{ SUPABASE_URL }}";
     const isLoggedIn   = {{ 'true' if user else 'false' }};
