@@ -69,5 +69,4 @@ HF_API_TOKEN=...
 uvicorn src.backend.main:app --reload
 ```
 
-## 시연 영상
-<video src="https://github.com/justpers/Smart-Photo-Sorter/blob/main/docs/%EC%98%81%EC%83%81.mp4" controls width="640"></video>
+## 시연 영상 ->  docs/영상.mp4
