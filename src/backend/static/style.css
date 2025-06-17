@@ -221,3 +221,91 @@ body {
 /* album용 grid 스타일이 없다면 추가 */
 .grid img { border-radius: 6px; transition: transform .2s }
 .grid img:hover { transform: scale(1.03); }
+
+/* ─────────────────────────────────────────────
+   Album 페이지 사이드바 & 버튼 스타일 개선
+───────────────────────────────────────────── */
+.sidebar {
+  width: 350px;       /* 원하는 너비 */
+  padding: 40px 24px;
+  border-right: 1px solid #ddd;
+}
+
+/* Search 섹션을 아래로 내리기 */
+.sidebar .search {
+  margin-top: 30px;      /* 충분히 아래로 */
+}
+
+/* (기존) section 간격을 재조정 */
+.sidebar .duplicates {
+  margin-top: 200px;      /* Search와 충분한 거리 */
+}
+
+/* 섹션 제목(h3) 글자 크기 */
+.sidebar .search h3,
+.sidebar .duplicates h3 {
+  font-size: 30px;    /* 원하는 크기로 조절 */
+  font-weight: 700;   /* 필요하면 굵기도 함께 */
+  margin-bottom: 12px;
+}
+
+/* 섹션은 기본 왼쪽 정렬 유지 */
+.sidebar .search,
+.sidebar .duplicates {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;  /* ← 왼쪽 정렬 */
+  margin-bottom: 48px;
+}
+
+/* 버튼만 오른쪽 끝으로 보내기 */
+.sidebar .search button,
+.sidebar .duplicates button {
+  align-self: flex-end;     /* ← 여기를 오른쪽 정렬 */
+  /* (기존 button 스타일은 그대로 유지) */
+}
+
+/* 검색 입력창 */
+.sidebar #tag-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 16px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+.sidebar #tag-input:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+}
+
+/* 버튼 공통 스타일 */
+.sidebar button {
+  display: inline-block;
+  padding: 10px 18px;
+  margin-top: 8px;
+  background-color: #737b85; /* 메인 컬러 */
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+.sidebar button:hover {
+  background-color: #0056b3;
+}
+.sidebar button:active {
+  transform: scale(0.97);
+}
+
+/* photo-container 와 사이드바 사이 여백 */
+.page-content {
+  display: flex;
+}
+.page-content .photo-container {
+  flex: 1;
+  padding: 40px 20px;
+}
