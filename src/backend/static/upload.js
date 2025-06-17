@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/upload", true);
+    xhr.open("POST", "/api/upload", true);
+    xhr.withCredentials = true;
 
     xhr.upload.onprogress = e => {
       if (e.lengthComputable) {
@@ -36,7 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (xhr.status === 200) {
         alert("업로드 완료됐습니다!");
       } else {
-        alert("업로드 실패: " + xhr.responseText);
+        let msg = xhr.responseText;
+        try{
+          const err = JSON.parse(xhr.responseText);
+          msg = err.detail || JSON.stringify(err);
+        } catch {}
+        alert("업로드 실패:" + msg);
       }
       fileInput.value = "";  // 선택 리셋
     };
