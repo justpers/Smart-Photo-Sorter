@@ -30,18 +30,24 @@ async def upload_images(
 
         # 2) HF API 로 태그 예측 → [{label,score},…]
         try:
-            preds = AIService._query(data, top_k=5)
+            preds = AIService._query(data, top_k=3)
         except Exception as e:
             logger.error("AI tagging failed:", exc_info=True)
             preds = []
 
         # 3) 라벨 문자열을 쉼표로 분할 → 토큰 리스트
+        seen   = set()
         tokens = []
         for p in preds:
             for tok in p["label"].split(","):
                 tok = tok.strip()
-                if tok:
+                if tok and tok not in seen:
+                    seen.add(tok)
                     tokens.append(tok)
+                if len(tokens) == 3:
+                    break
+            if len(tokens) == 3:
+                break
 
         saved.append((key, tokens))
 

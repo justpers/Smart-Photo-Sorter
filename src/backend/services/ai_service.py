@@ -23,7 +23,7 @@ HEADERS  = {
 
 class AIService:
     @staticmethod
-    def _query(image_bytes: bytes, top_k: int = 5) -> list[dict]:
+    def _query(image_bytes: bytes, top_k: int = 3) -> list[dict]:
         if not image_bytes:
             raise ValueError("이미지 데이터가 비어 있습니다.")
         resp = requests.post(API_URL, headers=HEADERS, data=image_bytes, timeout=30)
