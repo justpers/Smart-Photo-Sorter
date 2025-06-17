@@ -3,11 +3,11 @@ from fastapi import FastAPI, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from collections import Counter
 import os
 
-# 페이지 핸들러
 from src.backend.core.security import get_optional_current_user
-# API 라우터
+from src.backend.services.supabase_client import supabase
 from src.backend.api import auth, upload, album as album_api, duplicates
 
 app = FastAPI()
@@ -26,8 +26,22 @@ async def main_page(request: Request, user=Depends(get_optional_current_user)):
 # 앨범 페이지
 @app.get("/album", response_class=HTMLResponse)
 async def album_page(request: Request, user=Depends(get_optional_current_user)):
-    # TODO: 실제 DB에서 top 6 태그를 뽑아주세요.
-    popular = ["apron", "food market", "dog", "travel", "flower", "sunset"]
+    resp = supabase.table("photos") \
+        .select("tags") \
+        .eq("user_id", user.id) \
+        .execute()
+    rows = resp.data or []
+
+    flat = []
+    for r in rows:
+        for tag_str  in (r.get("tags") or []):
+            for tok in tag_str.split(","):
+                tok = tok.strip()
+                if tok:
+                    flat.append(tok)
+    counts = Counter(flat)    
+    popular = [tag for tag, _ in counts.most_common(6)]
+
     return templates.TemplateResponse(
         "album.html",
         {
