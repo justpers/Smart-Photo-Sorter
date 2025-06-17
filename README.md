@@ -1,11 +1,11 @@
-# Smart-Photo-Sorter# 📷 Smart Photo Sorter
+# Smart Photo Sorter
 
 AI 기반의 사진 업로드 및 자동 태깅, 중복 제거, 태그 기반 검색이 가능한 웹 서비스입니다.  
 Supabase를 백엔드로 활용하며, FastAPI 기반 API와 프론트엔드 JS로 구성되어 있습니다.
 
 ---
 
-## 🌟 주요 기능
+## 주요 기능
 
 - ✅ 사진 업로드 (Drag & Drop 지원)
 - ✅ AI 자동 태깅 (최대 3개)
@@ -17,7 +17,7 @@ Supabase를 백엔드로 활용하며, FastAPI 기반 API와 프론트엔드 JS�
 
 ---
 
-## 🧠 사용 기술
+## 사용 기술
 
 | 구분 | 기술 |
 |------|------|
