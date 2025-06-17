@@ -6,13 +6,11 @@ from fastapi.staticfiles import StaticFiles
 from collections import Counter
 import os
 from fastapi import HTTPException
-
 from src.backend.core.security import get_optional_current_user
 from src.backend.services.supabase_client import supabase
-from src.backend.api import (
-    auth, upload, album as album_api, duplicates, photo  
-)
 
+from backend.api import auth, upload as upload_api, album as album_api, photo as photo_api
+from backend.api.duplicates import router as duplicates_router
 app = FastAPI()
 
 # 템플릿 / static
@@ -102,9 +100,8 @@ async def photo_page(photo_id: str, request: Request,
         },
     )
 
-# ─── API 라우터 등록 ──────────────────────────────────────────────────────
-app.include_router(auth.router,       prefix="")       # /login, /signup, /logout
-app.include_router(upload.router,     prefix="/api")   # POST /api/upload
-app.include_router(album_api.router,  prefix="/api")   # GET  /api/photos
-app.include_router(duplicates.router, prefix="/api")   # 중복 탐색
-app.include_router(photo.router,      prefix="/api")   # GET/PATCH/DELETE /api/photos/...
+app.include_router(auth.router,          prefix="")
+app.include_router(upload_api.router,    prefix="/api")
+app.include_router(album_api.router,     prefix="/api")
+app.include_router(photo_api.router,     prefix="/api")
+app.include_router(duplicates_router,    prefix="/api")

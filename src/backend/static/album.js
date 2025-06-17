@@ -96,11 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
       doSearch();
     })
   );
-
-  // 중복 정리
-  dupBtn.addEventListener("click", () =>
-    alert("중복 사진 정리 기능은 아직 준비 중입니다.")
-  );
+    if (dupBtn) {
+    dupBtn.addEventListener("click", removeDuplicates);
+  } else {
+    console.warn("dupBtn element not found");
+  }
 
   // ───────────────────────── 무한 스크롤
   const sentinel = document.createElement("div");
@@ -112,4 +112,54 @@ document.addEventListener("DOMContentLoaded", () => {
     container.appendChild(sentinel);
     io.observe(sentinel);
   });
+
+  // // 중복 정리
+  // dupBtn.addEventListener("click", () =>
+  //   alert("중복 사진 정리 기능은 아직 준비 중입니다.")
+  // );
+  // 기존에 alert만 띄우던 stub 함수를 교체합니다.
+  async function removeDuplicates() {
+    try {
+      // 1) 중복 그룹 가져오기 (✅ 인증 포함)
+      const resp = await fetch("/api/duplicates", {
+        credentials: "include",
+        headers: { "Accept": "application/json" }
+      });
+      if (!resp.ok) {
+        console.error("중복 조회 응답:", resp.status, await resp.text());
+        throw new Error("중복 조회 실패");
+      }
+      const groups = await resp.json();
+
+      if (groups.length === 0) {
+        alert("중복 사진이 없습니다.");
+        return;
+      }
+
+      // 2) delete 호출에도 인증 포함
+      for (const grp of groups) {
+        const keep_id    = grp[0];
+        const delete_ids = grp.slice(1);
+        if (!delete_ids.length) continue;
+
+        const res2 = await fetch("/api/duplicates/resolve", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ keep_id, delete_ids })
+        });
+        if (!res2.ok) {
+          const errText = await res2.text();
+          console.error("삭제 오류:", res2.status, errText);
+          throw new Error("중복 사진 삭제 중 오류 발생");
+        }
+      }
+
+      alert("중복 사진을 정리했습니다.");
+      window.location.reload();
+    } catch (e) {
+      console.error(e);
+      alert(e.message);
+    }
+  }
 });
