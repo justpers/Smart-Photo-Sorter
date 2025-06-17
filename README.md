@@ -67,6 +67,7 @@ HF_API_TOKEN=...
 
 # 4. 서버 실행
 uvicorn src.backend.main:app --reload
+```
 
 ## 시연 영상
 <video src="https://github.com/justpers/Smart-Photo-Sorter/blob/main/docs/%EC%98%81%EC%83%81.mp4" controls width="640"></video>
